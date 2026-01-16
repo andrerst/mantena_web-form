@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Printable Power of Attorney Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; line-height: 1.5; }
+        .page { margin-bottom: 20px; page-break-after: always; }
+        h1 { text-align: center; font-size: 16pt; margin-top: 20px; margin-bottom: 30px;}
+        .title-line1 { font-weight: bold; }
+        .title-line2 { border-bottom: 1px solid #000; display: block; }
+        p { margin: 10px 0; }
+        .filled { border-bottom: 1px solid #000; display: inline-block; min-width: 200px; white-space: pre-wrap; }
+        .checkbox-filled { font-family: monospace; display: inline; }
+        .signature-row { display: flex; align-items: flex-start; margin-top: 60px; } /* Space above */
+        .signature-left { flex: 2; margin-right: 10px; }
+        .signature-right { flex: 1; }
+        .signature-line { border-bottom: 1px solid #000; width: 100%; height: 1em; margin-bottom: 5px; }
+        .signature-p { margin: 0; }        
+        .notary-block { margin-top: 30px; margin-bottom: 30px; } /* Extra space for notary */
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+    <h1>
+        <div class="title-line1">POWER OF ATTORNEY AND DELEGATION OF AUTHORITY BY</div>
+        <div class="title-line2">PARENT CONCERNING MINOR CHILD (complete one for each child)</div>
+    </h1>
+    
+    <div class="page"> <!-- Page 1 -->
+        <p>This Power of Attorney is made on <span class="filled" style="min-width: 100px;">{{ data.get('poa_month', '') }}</span> <span class="filled" style="min-width: 80px;">{{ data.get('poa_day', '') }}</span>, 20 <span class="filled" style="min-width: 50px;">{{ data.get('poa_year', '') }}</span>.</p>
+        
+        <p>BETWEEN:</p>
+        
+        <p>PARENT/GUARDIAN(S):</p>
+        
+        <p>Name: <span class="filled" style="min-width: 250px;">{{ data.get('parent1_name', '') }}</span>      Relationship: <span class="filled" style="min-width: 150px;">{{ data.get('parent1_relationship', '') }}</span></p>
+        
+        <p>Name: <span class="filled" style="min-width: 250px;">{{ data.get('parent2_name', '') }}</span>      Relationship: <span class="filled" style="min-width: 150px;">{{ data.get('parent2_relationship', '') }}</span></p>
+        
+        <p>Whose address and telephone number are: <br>{{ data.get('parents_address_phone', '')|replace('\n', '<br>')|safe }}</p>
+        
+        <p>Who state there is no court order or other legal prohibitions now in effect that would prevent him/her/them from exercising this authority,</p>
+        
+        <p>AND ATTORNEY IN FACT:</p>
+        <span class="filled" style="width: 100%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
+        <p>(Name)</p>
+        
+        <p>Whose address and telephone number are: <br>{{ data.get('attorney_address_phone', '')|replace('\n', '<br>')|safe }}</p>
+        
+        <p>If only one parent is signing, or if a nonparent custodian who shares custody with a parent is signing but the parent is not, please check off reason:</p>
+        
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('reason_death', False) else '___' }}</span> Death of one parent.</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('reason_custody_removed', False) else '___' }}</span> Custody has been removed by a court of law.</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('reason_mentally_physically_unable', False) else '___' }}</span> Mentally or physically unable to give consent.</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('reason_not_involved', False) else '___' }}</span> The parent has not been involved in raising or financially supporting the child for two years or a third of the life of the child, whichever is less, immediately preceding the date of the latest signature below.</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('reason_unknown_whereabouts', False) else '___' }}</span> The identity or whereabouts of such parent are unknown to me.</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('reason_unable_to_reach', False) else '___' }}</span> Despite diligent efforts described below, I was unable to reach such parent.</p>
+        
+        <p>Diligent efforts included: <br>{{ data.get('diligent_efforts', '')|replace('\n', '<br>')|safe }}</p>
+        
+        <p>Other, please explain: <br>{{ data.get('other_explain', '')|replace('\n', '<br>')|safe }}</p>
+        
+        <p>I/we appoint said Attorney-in-Fact, pursuant of the provisions of N.J.S.A. 3B: 12-39, and delegate of said Attorney-in-Fact the following powers concerning the care, custody and property of my/our child/minor ward.</p>
+        
+        <p><span class="filled" style="min-width: 300px;">{{ data.get('child_name', '') }}</span> (“the child”), born on <span class="filled" style="min-width: 80px;">{{ data.get('child_birth_day', '') }}</span> day of <span class="filled" style="min-width: 100px;">{{ data.get('child_birth_month', '') }}</span> of 20 <span class="filled" style="min-width: 50px;">{{ data.get('child_birth_year', '') }}</span>.</p>
+    </div>
+    
+    <div class="page"> <!-- Page 2 -->
+        <p><u>Care-Giving</u>. The Attorney-in-Fact shall have temporary care-giving authority for the child/minor ward, until such time as the child/minor ward is returned to our/my physical custody, or his/her custody status is altered by a federal, state, or local agency; or changed by a court of law.</p>
+            
+        <p><u>Well-Being</u>. The Attorney-in-Fact shall have the power to provide for the child's/minor ward's physical and mental well-being, including but not limited to, providing food and shelter.</p>
+            
+        <p><u>Education</u>. The Attorney-in-Fact shall have the authority to enroll the child/minor ward in the appropriate educational institutions; obtain access to his/her school records; authorize his or her participation in school activities; and make any and all decisions related to his or her education, including, but not limited to, those related to special education.</p>
+            
+        <p><u>Health Care</u>. The attorney in fact shall have the authority, to the same extent that a parent/custodian/guardian would have the authority, to make medical, dental, and mental health decisions; to sign documents, waivers and releases required by a hospital or physician; to access medical, dental, or mental health records concerning the child/minor ward; to authorize the child's/minor ward's admission to or discharge from any hospital or medical care facility; to consult with any provider of health care; to consent to the provision, withholding, modification or withdrawal of any health care procedure; and to make other decisions related to the child's/minor ward's health care needs.</p>
+            
+        <p><u>Travel</u>. The Attorney-in-Fact shall have the authority to make travel arrangements on behalf of the child/minor ward for destinations both inside and outside of the United States by air and/or ground transportation; to accompany the child/minor ward on any such trips; and to make any and all related arrangements on behalf of the child/minor ward, including, but not limited to, hotel accommodations. The Attorney-in-Fact shall also have the power to request the Brazilian Consulate to issue passports and any necessary travel documents for the child/minor ward.</p>
+            
+        <p><u>Financial Interests</u>. The Attorney-in-Fact may handle any and all financial affairs and any and all personal and legal matters concerning the child/minor ward.</p>
+            
+        <p><u>All Other Powers</u>. The Attorney-in-Fact shall have the authority to handle and engage in any and all other matters relating to the care, custody and property of the child/minor ward which are permitted pursuant to applicable state law.</p>
+        
+        <p>By this delegation, I/we provide that the Attorney-in-Fact's authority shall take effect upon the following activating event(s). Check all that apply:</p>
+        
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('activate_execution', False) else '___' }}</span> The execution of this document on the latest date below; or</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('activate_incapacitated', False) else '___' }}</span> My attending physician concludes that I am incapacitated, and thus unable to care for my child/minor ward; or</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('activate_debilitated', False) else '___' }}</span> My attending physician concludes that I am physically debilitated, and thus unable to care for my child/minor ward; or</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('activate_detained_immigration', False) else '___' }}</span> I am detained in immigration detention, removed, or deported; or</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('activate_incarcerated', False) else '___' }}</span> I am incarcerated based on criminal charges, including pending charges, or conviction; or</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('activate_deployed_military', False) else '___' }}</span> I am deployed in military service; or</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('activate_upon_death', False) else '___' }}</span> Upon my death, if I have made no more permanent care arrangements for my minor child/minor ward; or</p>
+        <p><span class="checkbox-filled">{{ '_X_' if data.get('activate_other', False) else '___' }}</span> Other (specify reason). <span class="filled">{{ data.get('activate_other_reason', '') }}</span></p>
+    </div>
+    
+    <div class="page"> <!-- Page 3 -->
+        <p>In the event that the person designated above is unable or unwilling to act as Attorney-in-Fact to my child/minor ward, I hereby name: <br>{{ data.get('alternate_attorney_info', '')|replace('\n', '<br>')|safe }}</p>
+        <p>(put name, address, and telephone number of alternate Attorney-in-Fact), as alternate Attorney-in-Fact to my child/minor ward.</p>
+        
+        <p>I/we understand that this delegation will expire in six months from the execution of this document on the latest date below, and that the authority of the Attorney-in-Fact, if any, will cease, unless by that date (i) I renew this delegation, by the same process applicable to the original delegation, or; (ii) a court of competent jurisdiction appoints a custodian, guardian, or standby guardian for the child/minor award; or (iii) exigent circumstances make it impossible for me to renew this delegation, and I have not made alternative care arrangements for my child/minor award.</p>
+            
+        <p>I/we hereby authorize that the Attorney-in-Fact as set forth above shall be provided with a copy of my/our attending physician's statement(s), if applicable.</p>
+            
+        <p>In the event that an activating event occurs and a Power of Attorney is activated pursuant to this statement, I declare that it is my intention to retain full parental rights to the extent consistent with my condition and circumstances and, further, that I retain the authority to revoke the Power of Attorney consistent with my rights herein at any time.</p>
+        
+        <!-- Static blank signature blocks -->
+        <!-- Updated signature blocks -->
+<div class="signature-row">
+                <div class="signature-left">
+                    <div class="signature-line"></div>
+                    <p class="signature-p">Signature of Mother</p>
+                    <!-- <div class="signature-line"></div> -->
+                    <p class="signature-p">Name of the mother</p>
+                </div>
+                <div class="signature-right">
+                    <div class="signature-line"></div>
+                    <p class="signature-p">Date of Signature</p>
+                </div>
+            </div>
+            
+            <div class="signature-row">
+                <div class="signature-left">
+                    <div class="signature-line"></div>
+                    <p class="signature-p">Signature of Father Parent/Guardian #2</p>
+                    <!-- <div class="signature-line"></div> -->
+                    <p class="signature-p">Name of the father</p>
+                </div>
+                <div class="signature-right">
+                    <div class="signature-line"></div>
+                    <p class="signature-p">Date of Signature</p>
+                </div>
+            </div>
+            
+            <div class="signature-row">
+                <div class="signature-left">
+                    <div class="signature-line"></div>
+                    <p class="signature-p">Signature of Attorney in Fact</p>
+                    <!-- <div class="signature-line"></div> -->
+                    <p class="signature-p">Name of the Attorney in Fact</p>
+                </div>
+                <div class="signature-right">
+                    <div class="signature-line"></div>
+                    <p class="signature-p">Date of Signature</p>
+                </div>
+            </div>
+            
+            <div class="signature-row">
+                <div class="signature-left">
+                    <div class="signature-line"></div>
+                    <p class="signature-p">Witness Signature #1</p>
+                </div>
+                <div class="signature-right">
+                    <div class="signature-line"></div>
+                    <p class="signature-p">Date of Signature</p>
+                </div>
+            </div>
+            
+            <div class="signature-row">
+                <div class="signature-left">
+                    <div class="signature-line"></div>
+                    <p class="signature-p">Witness Signature #2</p>
+                </div>
+                <div class="signature-right">
+                    <div class="signature-line"></div>
+                    <p class="signature-p">Date of Signature</p>
+                </div>
+            </div>
+        </div>
+    
+    <div class="page"> <!-- Page 4 -->
+<p>STATE OF NEW JERSEY :</p>
+        <p>ss.:</p>
+        <p>COUNTY OF <span class="filled" style="min-width: 150px;">{{ data.get('notary1_county', '') }}</span></p>
+        
+        <p>BE IT REMEMBERED, that on <span class="filled" style="min-width: 100px;">{{ data.get('notary1_month', '') }}</span> (Month), <span class="filled" style="min-width: 80px;">{{ data.get('notary1_day', '') }}</span>, 20 <span class="filled" style="min-width: 50px;">{{ data.get('notary1_year', '') }}</span>, before me, the subscriber, a Notary Public of the State of New Jersey, personally appeared <span class="filled" style="min-width: 200px;">{{ data.get('notary1_appeared', '') }}</span>, who, I am satisfied, is the person named in and who executed the foregoing Durable Power of Attorney, and he/she did acknowledge that he/she executed it as his/her voluntary act for the uses and purposes expressed therein.</p>
+        
+        <div class="notary-block">
+            <div class="signature-line"></div>
+            <p>Notary Public</p>
+        </div>
+        
+        <p>STATE OF NEW JERSEY :</p>
+        <p>ss.:</p>
+        <p>COUNTY OF <span class="filled" style="min-width: 150px;">{{ data.get('notary2_county', '') }}</span></p>
+
+        <p>BE IT REMEMBERED, that on <span class="filled" style="min-width: 100px;">{{ data.get('notary2_month', '') }}</span> (Month), <span class="filled" style="min-width: 80px;">{{ data.get('notary2_day', '') }}</span>, 20 <span class="filled" style="min-width: 50px;">{{ data.get('notary2_year', '') }}</span>, before me, the subscriber, a Notary Public of the State of New Jersey, personally appeared <span class="filled" style="min-width: 200px;">{{ data.get('notary2_appeared', '') }}</span>, who, I am satisfied, is the person named in and who executed the foregoing Durable Power of Attorney, and he/she did acknowledge that he/she executed it as his/her voluntary act for the uses and purposes expressed therein.</p>
+
+        <div class="notary-block">
+            <div class="signature-line"></div>
+            <p>Notary Public</p>
+        </div>
+    </div>
+    
+    <button onclick="window.print()" class="no-print">Print Now</button>
+    <p class="no-print">Form saved as: {{ filename }} (for office use)</p>
+</body>
+</html>
