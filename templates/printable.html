@@ -143,6 +143,11 @@
     
     <div class="page"> <!-- Page 3 -->
         <p>In the event that the person designated above is unable or unwilling to act as Attorney-in-Fact to my child/minor ward, I hereby name: <br>{{ data.get('alternate_attorney_info', '')|replace('\n', '<br>')|safe }}</p>
+         <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->        
+         <span class="filled" style="width: 100%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
+         <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->
+         <span class="filled" style="width: 100%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
+
         <p>(put name, address, and telephone number of alternate Attorney-in-Fact), as alternate Attorney-in-Fact to my child/minor ward.</p>
         
         <p>I/we understand that this delegation will expire in six months from the execution of this document on the latest date below, and that the authority of the Attorney-in-Fact, if any, will cease, unless by that date (i) I renew this delegation, by the same process applicable to the original delegation, or; (ii) a court of competent jurisdiction appoints a custodian, guardian, or standby guardian for the child/minor award; or (iii) exigent circumstances make it impossible for me to renew this delegation, and I have not made alternative care arrangements for my child/minor award.</p>
