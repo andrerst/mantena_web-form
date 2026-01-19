@@ -85,15 +85,13 @@
         <p>Who state there is no court order or other legal prohibitions now in effect that would prevent him/her/them from exercising this authority,</p>
         
         <p style="margin-bottom: 20px;">AND ATTORNEY IN FACT:</p>
+         <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->  
          <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->
         <span class="filled" style="width: 50%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
         <p>(Name)</p>
         
         <p style="margin-bottom: 20px;">Whose address and telephone number are: <br>{{ data.get('attorney_address_phone', '')|replace('\n', '<br>')|safe }}</p>
          <span class="filled" style="width: 100%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
-         <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->
-         <span class="filled" style="width: 100%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
-    
         
         <p>If only one parent is signing, or if a nonparent custodian who shares custody with a parent is signing but the parent is not, please check off reason:</p>
         
@@ -143,10 +141,10 @@
     
     <div class="page"> <!-- Page 3 -->
         <p>In the event that the person designated above is unable or unwilling to act as Attorney-in-Fact to my child/minor ward, I hereby name: <br>{{ data.get('alternate_attorney_info', '')|replace('\n', '<br>')|safe }}</p>
-         <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->        
+         <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->    
+         <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->      
          <span class="filled" style="width: 100%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
-         <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->
-         <span class="filled" style="width: 100%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
+
 
         <p>(put name, address, and telephone number of alternate Attorney-in-Fact), as alternate Attorney-in-Fact to my child/minor ward.</p>
         
