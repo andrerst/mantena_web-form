@@ -12,17 +12,119 @@
         .title-line2 { text-decoration: underline; }
         p { margin: 10px 0; }
         label { display: block; margin-top: 10px; }
-        input[type="text"], textarea { border: none; border-bottom: 1px solid #000; background: transparent; width: auto; min-width: 200px; }
+        input[type="text"], textarea { border: none; border-bottom: 1px solid #000; background: transparent; width: auto; min-width: 1px; }
         textarea { width: 100%; height: 50px; border: 1px solid #ccc; }
         .checkbox { display: inline; margin-right: 5px; }
-        .inline-input { display: inline; width: 100px; }
+        .inline-input {
+                        width: auto !important;           /* override any previous width rules */
+                        min-width: unset !important;      /* remove the min-width: 200px fight */
+                        padding: 1px 4px;                 /* very small padding so it doesn't add extra space */
+                        box-sizing: border-box;
+                    }
         button { margin-top: 20px; padding: 10px; background: #4CAF50; color: white; border: none; width: 100%; }
+
+        button.date-reset-button {  /* More specific: Targets only buttons with this class */
+            flex: 0 0 auto;          /* Changed from 1 0 auto: No grow (first 0), no shrink (second 0) */
+            width: auto !important;  /* Override global width:100%; !important wins cascade */
+            padding: 6px 12px;       
+            font-size: 14px;         
+            font-weight: normal;     
+            background-color: #4c51af;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.2s ease;
+        }
+
+        .date-reset-button:hover {
+            background-color: #3f4390;  /* Darker on hover, like save button */
+        }
+
+        .date-reset-button:active {
+            background-color: #2c2f63;  /* Darker on click */
+        }
+
         .signature-row { display: flex; align-items: flex-start; margin-top: 60px; } /* Space above */
         .signature-left { flex: 2; margin-right: 10px; }
         .signature-right { flex: 1; }
-        .signature-line { border-bottom: 1px solid #000; width: 100%; height: 1em; margin-bottom: 5px; }
+        .signature-line { border-bottom: 1px solid #000; width: 80%; height: 1em; margin-bottom: 5px; }
         .signature-p { margin: 0; }
         .notary-block { margin-top: 30px; margin-bottom: 30px; } /* Extra space for notary */
+        .date-row {
+            display: flex;              
+            align-items: center;        
+            flex-wrap: wrap;            
+            gap: 8px;                   
+            justify-content: flex-start;  /* Align left; change to 'center' for centered if wrapped */
+        }
+        
+        .date-fields {
+            flex: 4 0 auto;               /* 80% ish - grows more, auto width base */
+            display: flex;                /* Make internal items flex too for inputs */
+            align-items: center;
+            gap: 4px;                     /* Internal spacing */
+            white-space: nowrap;          /* Prevent text wrapping inside */
+        }
+
+        /* ============================================= */
+        /* Save button styles */
+        /* ============================================= */
+
+        .save-button {
+            display: block;                /* makes width:100% actually work */
+            width: 100%;                   /* full width of its container (usually the page) */
+            max-width: 400px;              /* optional: don't make it ridiculously wide on large screens */
+            margin: 40px auto 20px auto;   /* nice top/bottom spacing + centered */
+            padding: 14px 24px;            /* taller + more horizontal padding = looks like a real button */
+            font-size: 18px;               /* bigger text = easier to tap/read */
+            font-weight: bold;             /* makes "Print Now" pop */
+            background-color: #4c51af;   
+            color: white;
+            border: none;
+            border-radius: 6px;            /* soft rounded corners - modern feel */
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15); /* subtle shadow = looks raised/clickable */
+            transition: background-color 0.2s ease; /* smooth hover effect */
+        }
+
+        .save-button:hover {
+            background-color: #3f4390;     /* slightly darker green on hover */
+        }
+
+        .save-button:active {
+            background-color: #2c2f63;     /* even darker when clicked */
+        }
+
+        /* Ensure it stays visible only when not printing */
+        @media print {
+            .save-button,
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        .reset-form-button {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;           
+            padding: 14px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #f44336;   
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: background-color 0.2s ease;
+        }
+
+        .reset-form-button:hover { background-color: #d32f2f; }
+        .reset-form-button:active { background-color: #b71c1c; }
+
     </style>
 </head>
 <body>
@@ -33,17 +135,25 @@
         <div class="title-line1">POWER OF ATTORNEY AND DELEGATION OF AUTHORITY BY</div>
         <div class="title-line2">PARENT CONCERNING MINOR CHILD (complete one for each child)</div>
     </h1>
-    <form method="POST">
+    <form method="POST" onkeydown="preventEnterSubmit(event)">
         <div class="page"> <!-- Page 1 -->
-            <p>This Power of Attorney is made on <input type="text" name="poa_month" class="inline-input" placeholder="(Month)"> <input type="text" name="poa_day" class="inline-input" placeholder="(Day)">, 20 <input type="text" name="poa_year" class="inline-input" placeholder="____">.</p>
+            <p class="date-row">
+                <span class="date-fields">This Power of Attorney is made on
+                    <input type="text" name="poa_month" placeholder="(Month)" style="min-width: 200px; max-width: 250px;" value="{{ today_month or '' }}">
+                    <input type="text" name="poa_day" placeholder="(Day)" style="min-width: 40px; max-width: 60px;" value="{{ today_day or '' }}">
+                    , 20
+                    <input type="text" name="poa_year" placeholder="YY" style="min-width: 40px; max-width: 60px;" value="{{ today_year or '' }}">.
+                </span>
+                <button type="button" class="date-reset-button" onclick="resetDate()">Reset Date</button>
+            </p>           
             
             <p>BETWEEN:</p>
             
             <p>PARENT/GUARDIAN(S):</p>
             
-            <p>Name: <input type="text" name="parent1_name">      Relationship: <input type="text" name="parent1_relationship"></p>
+            <p>Name: <input type="text" name="parent1_name" size="60">      Relationship: <input type="text" name="parent1_relationship" size="30"></p>
             
-            <p>Name: <input type="text" name="parent2_name">      Relationship: <input type="text" name="parent2_relationship"></p>
+            <p>Name: <input type="text" name="parent2_name" size="60">      Relationship: <input type="text" name="parent2_relationship" size="30"></p>
             
             <p>Whose address and telephone number are:</p>
             <textarea name="parents_address_phone"></textarea>
@@ -51,7 +161,7 @@
             <p>Who state there is no court order or other legal prohibitions now in effect that would prevent him/her/them from exercising this authority,</p>
             
             <p>AND ATTORNEY IN FACT:</p>
-            <input type="text" name="attorney_name" style="width: 100%;">
+            <input type="text" name="attorney_name" style="width: 45%;">
             <p>(Name)</p>
             
             <p>Whose address and telephone number are:</p>
@@ -74,7 +184,8 @@
             
             <p>I/we appoint said Attorney-in-Fact, pursuant of the provisions of N.J.S.A. 3B: 12-39, and delegate of said Attorney-in-Fact the following powers concerning the care, custody and property of my/our child/minor ward.</p>
             
-            <p><input type="text" name="child_name" style="width: 300px;"> (“the child”), born on <input type="text" name="child_birth_day" class="inline-input"> day of <input type="text" name="child_birth_month" class="inline-input"> of 20 <input type="text" name="child_birth_year" class="inline-input">.</p>
+            <p><input type="text" name="child_name" style="width: 680px;"> (“the child”),</p>
+            <p>born on <input type="text" name="child_birth_day" class="inline-input" size="10"> day of <input type="text" name="child_birth_month" class="inline-input" size="30"> of 20 <input type="text" name="child_birth_year" class="inline-input" size="10">.</p>
         </div>
         
         <div class="page"> <!-- Page 2 -->
@@ -124,7 +235,7 @@
                     <p class="signature-p">Name of the mother</p>
                 </div>
                 <div class="signature-right">
-                    <!-- <div class="signature-line"></div> -->
+                    <div class="signature-line"></div>
                     <p class="signature-p">Date of Signature</p>
                 </div>
             </div>
@@ -159,6 +270,7 @@
                 <div class="signature-left">
                     <div class="signature-line"></div>
                     <p class="signature-p">Witness Signature #1</p>
+                    <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->
                 </div>
                 <div class="signature-right">
                     <div class="signature-line"></div>
@@ -170,6 +282,7 @@
                 <div class="signature-left">
                     <div class="signature-line"></div>
                     <p class="signature-p">Witness Signature #2</p>
+                    <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->
                 </div>
                 <div class="signature-right">
                     <div class="signature-line"></div>
@@ -181,28 +294,87 @@
 <div class="page"> <!-- Page 4 -->
             <p>STATE OF NEW JERSEY :</p>
             <p>ss.:</p>
-            <p>COUNTY OF <input type="text" name="notary1_county"></p>
+            <p>COUNTY OF <input type="text" name="notary1_county" readonly></p>
             
-            <p>BE IT REMEMBERED, that on <input type="text" name="notary1_month" class="inline-input"> (Month), <input type="text" name="notary1_day" class="inline-input">, 20 <input type="text" name="notary1_year" class="inline-input">, before me, the subscriber, a Notary Public of the State of New Jersey, personally appeared <input type="text" name="notary1_appeared" style="width: 200px;">, who, I am satisfied, is the person named in and who executed the foregoing Durable Power of Attorney, and he/she did acknowledge that he/she executed it as his/her voluntary act for the uses and purposes expressed therein.</p>
+            <p>BE IT REMEMBERED, that on <input type="text" name="notary1_month" class="inline-input" readonly size="30"> (Month), <input type="text" name="notary1_day" class="inline-input" readonly size="10">, 20 <input type="text" name="notary1_year" class="inline-input" readonly size="10">, before me, the subscriber, a Notary Public of the State of New Jersey, personally appeared <input type="text" name="notary1_appeared" readonly size="90">, who, I am satisfied, is the person named in and who executed the foregoing Durable Power of Attorney, and he/she did acknowledge that he/she executed it as his/her voluntary act for the uses and purposes expressed therein.</p>
             
             <div class="notary-block">
-                <div class="signature-line"></div>
-                <p>Notary Public</p>
+                <!-- Underline + name on same visual line -->
+                <div class="signature-row" style="margin-top: 40px;">  <!-- extra top space if needed -->
+                    <div class="signature-left">
+                        <div class="signature-line" style="width: 80%;"></div>
+                        <!--<p class="signature-p">_______________________________</p> -->
+                    </div>
+                    <div class="signature-right">
+                        <!-- leave empty or add date line if notary needs to write date -->
+                    </div>
+                </div>
+                
+                <p class="signature-p">Notary Public</p>
             </div>
             
             <p>STATE OF NEW JERSEY :</p>
             <p>ss.:</p>
-            <p>COUNTY OF <input type="text" name="notary2_county"></p>
+            <p>COUNTY OF <input type="text" name="notary2_county" readonly></p>
             
-            <p>BE IT REMEMBERED, that on <input type="text" name="notary2_month" class="inline-input"> (Month), <input type="text" name="notary2_day" class="inline-input">, 20 <input type="text" name="notary2_year" class="inline-input">, before me, the subscriber, a Notary Public of the State of New Jersey, personally appeared <input type="text" name="notary2_appeared" style="width: 200px;">, who, I am satisfied, is the person named in and who executed the foregoing Durable Power of Attorney, and he/she did acknowledge that he/she executed it as his/her voluntary act for the uses and purposes expressed therein.</p>
+            <p>BE IT REMEMBERED, that on <input type="text" name="notary2_month" class="inline-input" readonly size="30"> (Month), <input type="text" name="notary2_day" class="inline-input" readonly size="10">, 20 <input type="text" name="notary2_year" class="inline-input" readonly size="10">, before me, the subscriber, a Notary Public of the State of New Jersey, personally appeared <input type="text" name="notary2_appeared" readonly size="90">, who, I am satisfied, is the person named in and who executed the foregoing Durable Power of Attorney, and he/she did acknowledge that he/she executed it as his/her voluntary act for the uses and purposes expressed therein.</p>
             
             <div class="notary-block">
-                <div class="signature-line"></div>
-                <p>Notary Public</p>
+                <!-- Underline + name on same visual line -->
+                <div class="signature-row" style="margin-top: 40px;">  <!-- extra top space if needed -->
+                    <div class="signature-left">
+                        <div class="signature-line" style="width: 80%;"></div>
+                        <!--<p class="signature-p">_______________________________</p> -->
+                    </div>
+                    <div class="signature-right">
+                        <!-- leave empty or add date line if notary needs to write date -->
+                    </div>
+                </div>
+                
+                <p class="signature-p">Notary Public</p>
             </div>
         </div>
         
-        <button type="submit">Save and Proceed to Print</button>
+        <button type="submit" class="save-button">Save and Proceed to Print</button>
+        <button type="button" class="reset-form-button" onclick="resetForm()">Reset Form</button>
     </form>
+    <script>
+    function resetDate() {
+        // Get today's date (browser local time)
+        const today = new Date();  // Like datetime.date.today()
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"];
+        const todayMonth = monthNames[today.getMonth()];  // 0-11 index → full name
+        const todayDay = today.getDate();                 // 1-31
+        const todayYear = today.getFullYear().toString().slice(-2);  // '26' for 2026
+
+        // Find the inputs by name and reset their values
+        document.querySelector('input[name="poa_month"]').value = todayMonth;
+        document.querySelector('input[name="poa_day"]').value = todayDay;
+        document.querySelector('input[name="poa_year"]').value = todayYear;
+    }
+function resetForm() {
+    if (!confirm("Are you sure? This will clear all fields?")) return;
+
+    const form = document.querySelector('form');
+    const elements = form.querySelectorAll('input, textarea');
+
+    elements.forEach(el => {
+        if (el.type === 'checkbox') {
+            el.checked = false;
+        } else if (el.type !== 'submit' && el.type !== 'button' && !el.readOnly) {
+            el.value = '';
+        }
+    });
+
+    resetDate();  // Re-pre-fill date
+}
+
+function preventEnterSubmit(event) {
+    if (event.key === 'Enter' && event.target.tagName !== 'TEXTAREA') {
+        event.preventDefault();
+    }
+}
+    </script>
 </body>
 </html>

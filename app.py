@@ -35,7 +35,19 @@ def form_page():
         
         return redirect(url_for('success', filename=filename))
     
-    return render_template('form.html')
+    else:
+        # This is implicit for GET, but adding for clarity
+        today = datetime.date.today()  # Gets current date (e.g., 2026-01-17) server's local time. For UTC: datetime.datetime.utcnow().date(), for timezones, use pytz
+        today_month = today.strftime('%B')  # Full month name: 'January'
+        today_day = today.day  # Integer: 17
+        today_year = today.strftime('%y')  # Two-digit year: '26'
+        
+        return render_template('form.html',
+                                today_month=today_month,
+                                today_day=today_day,
+                                today_year=today_year)
+    
+    # return render_template('form.html')
 
 @app.route('/success/<filename>')
 def success(filename):

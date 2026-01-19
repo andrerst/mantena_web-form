@@ -15,10 +15,48 @@
         .signature-row { display: flex; align-items: flex-start; margin-top: 60px; } /* Space above */
         .signature-left { flex: 2; margin-right: 10px; }
         .signature-right { flex: 1; }
-        .signature-line { border-bottom: 1px solid #000; width: 100%; height: 1em; margin-bottom: 5px; }
+        .signature-line { border-bottom: 1px solid #000; width: 80%; height: 1em; margin-bottom: 5px; }
         .signature-p { margin: 0; }        
         .notary-block { margin-top: 30px; margin-bottom: 30px; } /* Extra space for notary */
         @media print { .no-print { display: none; } }
+
+        /* ============================================= */
+        /* Print button - matches the green submit button */
+        /* ============================================= */
+
+        .print-button {
+            display: block;                /* makes width:100% actually work */
+            width: 100%;                   /* full width of its container (usually the page) */
+            max-width: 400px;              /* optional: don't make it ridiculously wide on large screens */
+            margin: 40px auto 20px auto;   /* nice top/bottom spacing + centered */
+            padding: 14px 24px;            /* taller + more horizontal padding = looks like a real button */
+            font-size: 18px;               /* bigger text = easier to tap/read */
+            font-weight: bold;             /* makes "Print Now" pop */
+            background-color: #4CAF50;     /* same green as form page */
+            color: white;
+            border: none;
+            border-radius: 6px;            /* soft rounded corners - modern feel */
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15); /* subtle shadow = looks raised/clickable */
+            transition: background-color 0.2s ease; /* smooth hover effect */
+        }
+
+        .print-button:hover {
+            background-color: #45a049;     /* slightly darker on hover */
+        }
+
+        .print-button:active {
+            background-color: #3e8e41;     /* even darker when clicked */
+        }
+
+        /* Ensure it stays visible only when not printing */
+        @media print {
+            .print-button,
+            .no-print {
+                display: none !important;
+            }
+        }        
+
     </style>
 </head>
 <body>
@@ -28,25 +66,34 @@
     </h1>
     
     <div class="page"> <!-- Page 1 -->
-        <p>This Power of Attorney is made on <span class="filled" style="min-width: 100px;">{{ data.get('poa_month', '') }}</span> <span class="filled" style="min-width: 80px;">{{ data.get('poa_day', '') }}</span>, 20 <span class="filled" style="min-width: 50px;">{{ data.get('poa_year', '') }}</span>.</p>
+        <p>This Power of Attorney is made on 
+            <span class="filled" style="min-width: 300px;">{{ data.get('poa_month', '') }}</span>
+            <span class="filled" style="min-width: 60px;">{{ data.get('poa_day', '') }}</span>
+            , 20 <span class="filled" style="min-width: 60px;">{{ data.get('poa_year', '') }}</span>.
+        </p>
         
         <p>BETWEEN:</p>
         
         <p>PARENT/GUARDIAN(S):</p>
         
-        <p>Name: <span class="filled" style="min-width: 250px;">{{ data.get('parent1_name', '') }}</span>      Relationship: <span class="filled" style="min-width: 150px;">{{ data.get('parent1_relationship', '') }}</span></p>
+        <p>Name: <span class="filled" style="min-width: 430px;">{{ data.get('parent1_name', '') }}</span>      Relationship: <span class="filled" style="min-width: 215px;">{{ data.get('parent1_relationship', '') }}</span></p>
         
-        <p>Name: <span class="filled" style="min-width: 250px;">{{ data.get('parent2_name', '') }}</span>      Relationship: <span class="filled" style="min-width: 150px;">{{ data.get('parent2_relationship', '') }}</span></p>
+        <p>Name: <span class="filled" style="min-width: 430px;">{{ data.get('parent2_name', '') }}</span>      Relationship: <span class="filled" style="min-width: 215px;">{{ data.get('parent2_relationship', '') }}</span></p>
         
         <p>Whose address and telephone number are: <br>{{ data.get('parents_address_phone', '')|replace('\n', '<br>')|safe }}</p>
         
         <p>Who state there is no court order or other legal prohibitions now in effect that would prevent him/her/them from exercising this authority,</p>
         
-        <p>AND ATTORNEY IN FACT:</p>
-        <span class="filled" style="width: 100%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
+        <p style="margin-bottom: 20px;">AND ATTORNEY IN FACT:</p>
+         <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->
+        <span class="filled" style="width: 50%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
         <p>(Name)</p>
         
-        <p>Whose address and telephone number are: <br>{{ data.get('attorney_address_phone', '')|replace('\n', '<br>')|safe }}</p>
+        <p style="margin-bottom: 20px;">Whose address and telephone number are: <br>{{ data.get('attorney_address_phone', '')|replace('\n', '<br>')|safe }}</p>
+         <span class="filled" style="width: 100%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
+         <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->
+         <span class="filled" style="width: 100%; display: block; min-width: 400px;">{{ data.get('attorney_name', '') }}</span>
+    
         
         <p>If only one parent is signing, or if a nonparent custodian who shares custody with a parent is signing but the parent is not, please check off reason:</p>
         
@@ -63,7 +110,8 @@
         
         <p>I/we appoint said Attorney-in-Fact, pursuant of the provisions of N.J.S.A. 3B: 12-39, and delegate of said Attorney-in-Fact the following powers concerning the care, custody and property of my/our child/minor ward.</p>
         
-        <p><span class="filled" style="min-width: 300px;">{{ data.get('child_name', '') }}</span> (“the child”), born on <span class="filled" style="min-width: 80px;">{{ data.get('child_birth_day', '') }}</span> day of <span class="filled" style="min-width: 100px;">{{ data.get('child_birth_month', '') }}</span> of 20 <span class="filled" style="min-width: 50px;">{{ data.get('child_birth_year', '') }}</span>.</p>
+        <p><span class="filled" style="min-width: 710px;">{{ data.get('child_name', '') }}</span> (“the child”), </p>
+        <p>born on <span class="filled" style="min-width: 80px;">{{ data.get('child_birth_day', '') }}</span> day of <span class="filled" style="min-width: 200px;">{{ data.get('child_birth_month', '') }}</span> of 20 <span class="filled" style="min-width: 50px;">{{ data.get('child_birth_year', '') }}</span>.</p>
     </div>
     
     <div class="page"> <!-- Page 2 -->
@@ -104,7 +152,6 @@
         <p>In the event that an activating event occurs and a Power of Attorney is activated pursuant to this statement, I declare that it is my intention to retain full parental rights to the extent consistent with my condition and circumstances and, further, that I retain the authority to revoke the Power of Attorney consistent with my rights herein at any time.</p>
         
         <!-- Static blank signature blocks -->
-        <!-- Updated signature blocks -->
 <div class="signature-row">
                 <div class="signature-left">
                     <div class="signature-line"></div>
@@ -148,6 +195,7 @@
                 <div class="signature-left">
                     <div class="signature-line"></div>
                     <p class="signature-p">Witness Signature #1</p>
+                    <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->
                 </div>
                 <div class="signature-right">
                     <div class="signature-line"></div>
@@ -159,6 +207,7 @@
                 <div class="signature-left">
                     <div class="signature-line"></div>
                     <p class="signature-p">Witness Signature #2</p>
+                    <p style="margin: 0; height: 25px;">&nbsp;</p>   <!-- invisible spacer -->
                 </div>
                 <div class="signature-right">
                     <div class="signature-line"></div>
@@ -172,26 +221,46 @@
         <p>ss.:</p>
         <p>COUNTY OF <span class="filled" style="min-width: 150px;">{{ data.get('notary1_county', '') }}</span></p>
         
-        <p>BE IT REMEMBERED, that on <span class="filled" style="min-width: 100px;">{{ data.get('notary1_month', '') }}</span> (Month), <span class="filled" style="min-width: 80px;">{{ data.get('notary1_day', '') }}</span>, 20 <span class="filled" style="min-width: 50px;">{{ data.get('notary1_year', '') }}</span>, before me, the subscriber, a Notary Public of the State of New Jersey, personally appeared <span class="filled" style="min-width: 200px;">{{ data.get('notary1_appeared', '') }}</span>, who, I am satisfied, is the person named in and who executed the foregoing Durable Power of Attorney, and he/she did acknowledge that he/she executed it as his/her voluntary act for the uses and purposes expressed therein.</p>
+        <p>BE IT REMEMBERED, that on <span class="filled" style="min-width: 250px;">{{ data.get('notary1_month', '') }}</span> (Month), <span class="filled" style="min-width: 50px;">{{ data.get('notary1_day', '') }}</span>, 20 <span class="filled" style="min-width: 50px;">{{ data.get('notary1_year', '') }}</span>, before me, the subscriber, a Notary Public of the State of New Jersey, personally appeared <span class="filled" style="min-width: 710px;">{{ data.get('notary1_appeared', '') }}</span>, who, I am satisfied, is the person named in and who executed the foregoing Durable Power of Attorney, and he/she did acknowledge that he/she executed it as his/her voluntary act for the uses and purposes expressed therein.</p>
         
         <div class="notary-block">
-            <div class="signature-line"></div>
-            <p>Notary Public</p>
+            <!-- Underline + name on same visual line -->
+            <div class="signature-row" style="margin-top: 80px;">  <!-- extra top space if needed -->
+                <div class="signature-left">
+                    <div class="signature-line" style="width: 80%;"></div>
+                    <!--<p class="signature-p">_______________________________</p> -->
+                </div>
+                <div class="signature-right">
+                    <!-- leave empty or add date line if notary needs to write date -->
+                </div>
+            </div>
+            
+            <p class="signature-p"">Notary Public</p>
         </div>
         
         <p>STATE OF NEW JERSEY :</p>
         <p>ss.:</p>
         <p>COUNTY OF <span class="filled" style="min-width: 150px;">{{ data.get('notary2_county', '') }}</span></p>
 
-        <p>BE IT REMEMBERED, that on <span class="filled" style="min-width: 100px;">{{ data.get('notary2_month', '') }}</span> (Month), <span class="filled" style="min-width: 80px;">{{ data.get('notary2_day', '') }}</span>, 20 <span class="filled" style="min-width: 50px;">{{ data.get('notary2_year', '') }}</span>, before me, the subscriber, a Notary Public of the State of New Jersey, personally appeared <span class="filled" style="min-width: 200px;">{{ data.get('notary2_appeared', '') }}</span>, who, I am satisfied, is the person named in and who executed the foregoing Durable Power of Attorney, and he/she did acknowledge that he/she executed it as his/her voluntary act for the uses and purposes expressed therein.</p>
+        <p>BE IT REMEMBERED, that on <span class="filled" style="min-width: 250px;">{{ data.get('notary2_month', '') }}</span> (Month), <span class="filled" style="min-width: 50px;">{{ data.get('notary2_day', '') }}</span>, 20 <span class="filled" style="min-width: 50px;">{{ data.get('notary2_year', '') }}</span>, before me, the subscriber, a Notary Public of the State of New Jersey, personally appeared <span class="filled" style="min-width: 710px;">{{ data.get('notary2_appeared', '') }}</span>, who, I am satisfied, is the person named in and who executed the foregoing Durable Power of Attorney, and he/she did acknowledge that he/she executed it as his/her voluntary act for the uses and purposes expressed therein.</p>
 
         <div class="notary-block">
-            <div class="signature-line"></div>
-            <p>Notary Public</p>
+            <!-- Underline + name on same visual line -->
+            <div class="signature-row" style="margin-top: 80px;">  <!-- extra top space if needed -->
+                <div class="signature-left">
+                    <div class="signature-line" style="width: 80%;"></div>
+                    <!--<p class="signature-p">_______________________________</p> -->
+                </div>
+                <div class="signature-right">
+                    <!-- leave empty or add date line if notary needs to write date -->
+                </div>
+            </div>
+
+            <p class="signature-p">Notary Public</p>
         </div>
     </div>
     
-    <button onclick="window.print()" class="no-print">Print Now</button>
+    <button onclick="window.print()" class="print-button no-print">Print Now</button>
     <p class="no-print">Form saved as: {{ filename }} (for office use)</p>
 </body>
 </html>
